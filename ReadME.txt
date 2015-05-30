@@ -24,4 +24,8 @@ Things planned to be added:
 3. The ability to limit the level of hire based on avaliable kerbals in the KSC of that level minus 1 (Right now it is limited by the level of the complex only).
 
 
-Please 
+If you find a bug please let me know. 
+
+Also to install simply copy the KSI folder into your GameData folder. Hopefully that should be all you need to do!
+
+OakTree42
