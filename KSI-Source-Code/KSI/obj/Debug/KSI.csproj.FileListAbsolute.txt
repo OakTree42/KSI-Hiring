@@ -1,0 +1,14 @@
+D:\KSPModding\KSI\KSI\bin\Debug\KSI.dll
+D:\KSPModding\KSI\KSI\bin\Debug\KSI.pdb
+D:\KSPModding\KSI\KSI\bin\Debug\Assembly-CSharp.dll
+D:\KSPModding\KSI\KSI\bin\Debug\UnityEngine.dll
+D:\KSPModding\KSI\KSI\bin\Debug\Assembly-CSharp-firstpass.dll
+D:\KSPModding\KSI\KSI\bin\Debug\TDx.TDxInput.dll
+D:\KSPModding\KSI\KSI\bin\Debug\TrackIRUnity.dll
+D:\KSPModding\KSI\KSI\bin\Debug\Mono.Cecil.dll
+D:\KSPModding\KSI\KSI\bin\Debug\Mono.Security.dll
+D:\KSPModding\KSI\KSI\bin\Debug\Assembly-CSharp.xml
+D:\KSPModding\KSI\KSI\bin\Debug\UnityEngine.xml
+D:\KSPModding\KSI\KSI\obj\Debug\KSI.csprojResolveAssemblyReference.cache
+D:\KSPModding\KSI\KSI\obj\Debug\KSI.dll
+D:\KSPModding\KSI\KSI\obj\Debug\KSI.pdb
