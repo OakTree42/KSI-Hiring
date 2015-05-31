@@ -351,8 +351,8 @@ namespace KSI
                     newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
                 }
             }
-
-            ScreenMessages.PostScreenMessage(newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created?");
+            Debug.LogError("KSI :: " + newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created?");
+//            ScreenMessages.PostScreenMessage(newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created?");
             newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
             newKerb.experience = 0;
             newKerb.experienceLevel = 0;
@@ -405,8 +405,6 @@ namespace KSI
                 Funding.Instance.AddFunds(-costMath(), TransactionReasons.CrewRecruited);
             }
         }
-
-
 
 
         private int costMath()

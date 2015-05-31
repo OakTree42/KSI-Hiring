@@ -13,16 +13,9 @@ namespace KSI
     {
         // Initiate Variables
         internal static string ImageFolder = "KSI/Images/";
-        internal float Brains = 50;
-        internal float Courage = 50;
-        internal bool Fearless = false;
-        internal int XPLevel = 0;
-        internal bool KGender = true;
-        internal float Job = 0; // 0 is tourist, 1 pilot, 2 scientist, 3 engineer
         private static ApplicationLauncherButton KSIButton = null;
         internal bool KSIGuiOn = false;
         internal bool KSITooltip = false;
-        
 
         void Awake()
         {
@@ -36,8 +29,10 @@ namespace KSI
 
         void OnGUIAppLauncherReady()
         {
+
             if (HighLogic.LoadedScene == GameScenes.SPACECENTER && KSIButton == null)
             {
+
                 string IconFile = "OTG";
                 KSIButton = ApplicationLauncher.Instance.AddModApplication(
                     BTOn,
@@ -48,12 +43,15 @@ namespace KSI
                     ApplicationLauncher.AppScenes.SPACECENTER,
                     (Texture)GameDatabase.Instance.GetTexture(ImageFolder + IconFile, false));
             }
+            KSIGuiOn = false;
         }
+
 
         void OnGUIAppLauncherDestroyed()
         {
             if (KSIButton != null)
             {
+                BTOff();
                 ApplicationLauncher.Instance.RemoveModApplication(KSIButton);
                 KSIButton = null;
             }
@@ -66,7 +64,6 @@ namespace KSI
                 Debug.LogError("KSI :: BTOn called without a button.");
                 return;
             }
-
             KSIGuiOn = true;
         }
 
@@ -98,18 +95,15 @@ namespace KSI
 
         void OnGUI()
         {
-            if (KSIGuiOn == true)
+            if ((KSIGuiOn) && (HighLogic.LoadedScene == GameScenes.SPACECENTER))
             {
                 KSIGUI();
-            }
-            if (HighLogic.LoadedScene != GameScenes.SPACECENTER) 
-            {
-                BTOff();
             }
         }
 
         void KSIGUI()
         {
+
             GUI.BeginGroup(new Rect(Screen.width / 2 - 250, Screen.height / 2 - 250, 500, 500));
             GUILayout.BeginVertical("box");
             GUILayout.Label("This is a place holder for now.");
@@ -117,10 +111,12 @@ namespace KSI
             GUILayout.Label("the new Astronaut Complex hire overlay works.");
             GUILayout.Label("This is a button for the Kerbal Science Institute: Placement Services.");
             GUILayout.Label("The reason there is an acorn as the logo is it is created by OakTree42.");
+            GUILayout.Label("If you do not close this window it may return when you reload the KSC screen.");
             if (GUILayout.Button("Close this Window", GUILayout.Width(200f)))
-                         BTOff();
+                BTOff();
             GUILayout.EndVertical();
             GUI.EndGroup();
+
         }
 
         void GTest1()
