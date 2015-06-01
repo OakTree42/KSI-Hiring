@@ -1,0 +1,36 @@
+{
+    "NAME":"KSI: Placement Services",
+    "URL":"https://github.com/OakTree42/KSI-Hiring",
+    "DOWNLOAD":"https://github.com/OakTree42/KSI-Hiring",
+    "GITHUB":
+    {
+        "USERNAME":"OakTree42",
+        "REPOSITORY":"KSI-Hiring",
+        "ALLOW_PRE_RELEASE":false,
+    },
+    "VERSION":
+    {
+        "MAJOR":0,
+        "MINOR":1,
+        "PATCH":1,
+        "BUILD":0
+    },
+    "KSP_VERSION":
+    {
+        "MAJOR":1,
+        "MINOR":0,
+        "PATCH":2
+    },
+    "KSP_VERSION_MIN":
+    {
+        "MAJOR":1,
+        "MINOR":0,
+        "PATCH":0
+    },
+    "KSP_VERSION_MAX":
+    {
+        "MAJOR":1,
+        "MINOR":0,
+        "PATCH":2
+    }
+}

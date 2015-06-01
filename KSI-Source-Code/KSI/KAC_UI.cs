@@ -104,6 +104,7 @@ namespace KSI
                     }
                 }
             }
+            Debug.Log("KIA Count - Pilots: " + KPilot.ToString() + " Scientists: " + KScientist.ToString() + " Engineers: " + KEngineer.ToString());
         }
 
         private void AstronautComplexShown()
@@ -302,13 +303,14 @@ namespace KSI
         {
 
             ProtoCrewMember newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
-
+            int loopcount = 0;
             if ((KGender == 0) && (KCareer == 0))
             {
                 while ((newKerb.experienceTrait.Title != "Pilot") || (newKerb.gender.ToString() != "Male"))
                 {
                     HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
                     newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
+                    loopcount++;
                 }
             }
             if ((KGender == 0) && (KCareer == 1))
@@ -317,6 +319,7 @@ namespace KSI
                 {
                     HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
                     newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
+                    loopcount++;
                 }
             }
             if ((KGender == 0) && (KCareer == 2))
@@ -325,6 +328,7 @@ namespace KSI
                 {
                     HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
                     newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
+                    loopcount++;
                 }
             }
             if ((KGender == 1) && (KCareer == 0))
@@ -333,6 +337,7 @@ namespace KSI
                 {
                     HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
                     newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
+                    loopcount++;
                 }
             }
             if ((KGender == 1) && (KCareer == 1))
@@ -341,6 +346,7 @@ namespace KSI
                 {
                     HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
                     newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
+                    loopcount++;
                 }
             }
             if ((KGender == 1) && (KCareer == 2))
@@ -349,10 +355,10 @@ namespace KSI
                 {
                     HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
                     newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
+                    loopcount++;
                 }
             }
-            Debug.LogError("KSI :: " + newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created?");
-//            ScreenMessages.PostScreenMessage(newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created?");
+            Debug.Log("KSI :: " + newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created in: " + loopcount.ToString() + " loops.");
             newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
             newKerb.experience = 0;
             newKerb.experienceLevel = 0;
@@ -362,6 +368,8 @@ namespace KSI
             {
                 newKerb.isBadass = true;
             }
+            Debug.Log("KSI :: Status set to Available, courage and stupidity set, fearless trait set.");
+
             if (KLevel == 1)
             {
                 newKerb.flightLog.AddEntry("Orbit,Kerbin");
@@ -372,6 +380,7 @@ namespace KSI
                 newKerb.ArchiveFlightLog();
                 newKerb.experience = 2;
                 newKerb.experienceLevel = 1;
+                Debug.Log("KSI :: Level set to 1.");
             }
             if (KLevel == 2)
             {
@@ -389,21 +398,25 @@ namespace KSI
                 newKerb.ArchiveFlightLog();
                 newKerb.experience = 8;
                 newKerb.experienceLevel = 2;
+                Debug.Log("KSI :: Level set to 2.");
             }
             if (ACLevel == 5)
             {
                 newKerb.experience = 9999;
                 newKerb.experienceLevel = 5;
+                Debug.Log("KSI :: Level set to 5 - Non-Career Mode default.");
             }
 
-            newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
-            roster.GetNewKerbal(newKerb.type);
-            KerbalRoster.SetExperienceTrait(newKerb);
-            GameEvents.onGUIAstronautComplexSpawn.Fire();
+            // newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available; // Already called earlier - keeping these lines as comments just in case.
+            // roster.GetNewKerbal(newKerb.type); // Again, appears to be redundant.
+            // KerbalRoster.SetExperienceTrait(newKerb); // appears to be redundant here.
+            GameEvents.onGUIAstronautComplexSpawn.Fire(); // Refreshes the AC so that new kerbal shows on the available roster - no other way I can find to do this.
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 Funding.Instance.AddFunds(-costMath(), TransactionReasons.CrewRecruited);
+                Debug.Log("KSI :: Funds deducted.");
             }
+            Debug.Log("KSI :: Hiring Function Completed.");
         }
 
 
