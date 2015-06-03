@@ -1,8 +1,8 @@
 {
     "NAME":"KSI: Placement Services",
-    "URL":"https://github.com/OakTree42/KSI-Hiring",
-    "DOWNLOAD":"https://github.com/OakTree42/KSI-Hiring",
-    "GITHUB":
+    "URL":"https://kerbalstuff.com/mod/871/KSI%20-%20Placement%20Services",
+    "DOWNLOAD":""https://kerbalstuff.com/mod/871/KSI%20-%20Placement%20Services/download/0.1.1",
+	"GITHUB":"https://github.com/OakTree42/KSI-Hiring",
     {
         "USERNAME":"OakTree42",
         "REPOSITORY":"KSI-Hiring",
@@ -12,7 +12,7 @@
     {
         "MAJOR":0,
         "MINOR":1,
-        "PATCH":1,
+        "PATCH":2,
         "BUILD":0
     },
     "KSP_VERSION":
