@@ -34,6 +34,7 @@ namespace KSI
     public class KerAstronautComplex : MonoBehaviour
     {
 
+
         private Rect _windowRect = default(Rect);
         private AstronautComplexApplicantPanel _applicantPanel;
         private float KStupidity = 50;
@@ -51,10 +52,8 @@ namespace KSI
         private GUIContent KFemale = new GUIContent("Female", AssetBase.GetTexture("kerbalicon_recruit_female"));
         Color basecolor = GUI.color;
         private float ACLevel = 0;
-        private int KPilot = 0;
-        private int KScientist = 0;
-        private int KEngineer = 0;
-        private float DCost = 1;
+        private double KDead;
+        private double DCost = 1;
         KerbalRoster roster = HighLogic.CurrentGame.CrewRoster;
         private bool hTest = true;
         private bool hasKredits = true;
@@ -74,7 +73,6 @@ namespace KSI
                 _applicantPanel.Hide();
                 GameEvents.onGUIAstronautComplexSpawn.Add(AstronautComplexShown);
                 GameEvents.onGUIAstronautComplexDespawn.Add(AstronautComplexHidden);
-
                 enabled = false;
 
             }
@@ -85,34 +83,29 @@ namespace KSI
             }
 
         }
-        
-        private void onGUIAstronautComplexSpawn()
-        {
 
-            KPilot = 0;
-            KScientist = 0;
-            KEngineer = 0;
-            // This seems to only apply to KIA kerbals, not 'missing' which you get if respawn is on (Easy/Normal mode)
-            // Also need a valid place to put this code as it does not seem to run at this time, so the reference is invalid.
-            foreach (ProtoCrewMember kerbal in HighLogic.CurrentGame.CrewRoster.Crew)
+
+        private void dCheck()
+        {
+            KDead = 0;
+            // 10 percent for dead and 5 percent for missing, note can only have dead in some career modes.
+            foreach (ProtoCrewMember kerbal in roster.Crew)
             {
-                if (kerbal.rosterStatus.Equals(2))
+                if (kerbal.rosterStatus.ToString() == "Dead")
                 {
-                    if (kerbal.experienceTrait.Title == "Pilot")
+                    if (kerbal.experienceTrait.Title == KCareerStrings[KCareer])
                     {
-                        KPilot += 1;
+                        KDead += 1;
                     }
-                    if (kerbal.experienceTrait.Title == "Scientist")
+                }
+                if (kerbal.rosterStatus.ToString() == "Missing")
+                {
+                    if (kerbal.experienceTrait.Title == KCareerStrings[KCareer])
                     {
-                        KScientist += 1;
-                    }
-                    if (kerbal.experienceTrait.Title == "Engineer")
-                    {
-                        KEngineer += 1;
+                        KDead += 0.5;
                     }
                 }
             }
-            Debug.Log("KIA Count - Pilots: " + KPilot.ToString() + " Scientists: " + KScientist.ToString() + " Engineers: " + KEngineer.ToString());
         }
 
         private void AstronautComplexShown()
@@ -158,6 +151,7 @@ namespace KSI
 
         private void OnGUI()
         {
+            
             GUI.skin = HighLogic.Skin;
             var roster = HighLogic.CurrentGame.CrewRoster;
             GUIContent[] KGendArray = new GUIContent[2] { KMale, KFemale };
@@ -366,6 +360,7 @@ namespace KSI
                     loopcount++;
                 }
             }
+            Debug.Log("KSI :: KIA MIA Stat is: " + KDead);
             Debug.Log("KSI :: " + newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created in: " + loopcount.ToString() + " loops.");
             newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
             newKerb.experience = 0;
@@ -428,8 +423,7 @@ namespace KSI
 
         private int costMath()
         {
-
-
+            dCheck();
             float fearcost = 0;
             float basecost = 25000;
             float couragecost = (50 - KCourage) * 150;
@@ -439,24 +433,12 @@ namespace KSI
             {
                 fearcost += 10000;
             }
-            switch (KCareer)
-            {
-                case 0:
-                    DCost = 1 + (KPilot * 0.1f);
-                    break;
-                case 1:
-                    DCost = 1 + (KScientist * 0.1f);
-                    break;
-                case 2:
-                    DCost = 1 + (KEngineer * 0.1f);
-                    break;
-                default:
-                    DCost = 1;
-                    break;
-            }
-            float currentcost = (basecost - couragecost - stupidcost + fearcost) * (KLevel + 1) * DCost * diffcost;
-            double finaldouble = (Math.Round(currentcost));
-            int finalcost = Convert.ToInt32(finaldouble);
+            DCost = 1 + (KDead * 0.1f);
+            
+
+            double currentcost = (basecost - couragecost - stupidcost + fearcost) * (KLevel + 1) * DCost * diffcost;
+            // double finaldouble = (Math.Round(currentcost));
+            int finalcost = Convert.ToInt32(currentcost); //Convert.ToInt32(finaldouble);
             return finalcost;
         }
     }

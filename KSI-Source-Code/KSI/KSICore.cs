@@ -8,6 +8,12 @@ using UnityEngine;
 
 namespace KSI
 {
+    // To Do: Create/access a config file that can store various settings based on game name or smoething.
+    // Need to add options for 'creative' mode that allows zero cost hires in Career mode. (Basically set AC Level to 5 and remove cost)
+    // Add a way to disable entire mod
+    // Add a way to change it so you instead set your 'desires' and get a new list for each 'cattle call'.
+    // Add a system for the KIA / MIA cost increase and a toggle to turn this on and off.
+    // Review the issue with appearances. Confirm or check the issue with UTaR/ToD
     [KSPAddon(KSPAddon.Startup.EveryScene, false)]
     public class KSICore : MonoBehaviour
     {
