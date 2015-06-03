@@ -20,9 +20,20 @@ using System.Reflection;
 namespace KSI
 {
     [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+    public class AstronautComplexSpaceCentre : MonoBehaviour
+    {
+        private void Start() { gameObject.AddComponent<KerAstronautComplex>(); }
+    }
+
+    [KSPAddon(KSPAddon.Startup.EditorAny, false)]
+    public class AstronautComplexEditor : AstronautComplexSpaceCentre
+    {
+    }
+
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
     public class KerAstronautComplex : MonoBehaviour
     {
-        //      private readonly ILog _log = new DebugLog("Reprogrammer");
+
         private Rect _windowRect = default(Rect);
         private AstronautComplexApplicantPanel _applicantPanel;
         private float KStupidity = 50;
@@ -55,12 +66,8 @@ namespace KSI
             try
             {
                 SetupSkin();
-                var complex = UIManager.instance.transform.Find("panel_AstronautComplex");
-
-#if DEBUG
-                //DumpAssetBaseTextures();
-                //complex.gameObject.PrintComponents(new DebugLog("Complex"));
-#endif
+                var complex = UIManager.instance.gameObject.GetComponentsInChildren<CMAstronautComplex>(true).FirstOrDefault();
+                if (complex == null) throw new Exception("Could not find astronaut complex");
 
                 _applicantPanel = new AstronautComplexApplicantPanel(complex);
                 _windowRect = _applicantPanel.PanelArea;
@@ -71,14 +78,14 @@ namespace KSI
                 enabled = false;
 
             }
-            catch (Exception) // removed 'e' after Exception
+            catch (Exception e) 
             {
-                //                _log.Error("Error: Encountered unhandled exception: " + e);
+                Debug.LogError("KSI: Encountered unhandled exception: " + e);
                 Destroy(this);
             }
 
         }
-
+        
         private void onGUIAstronautComplexSpawn()
         {
 
@@ -86,6 +93,7 @@ namespace KSI
             KScientist = 0;
             KEngineer = 0;
             // This seems to only apply to KIA kerbals, not 'missing' which you get if respawn is on (Easy/Normal mode)
+            // Also need a valid place to put this code as it does not seem to run at this time, so the reference is invalid.
             foreach (ProtoCrewMember kerbal in HighLogic.CurrentGame.CrewRoster.Crew)
             {
                 if (kerbal.rosterStatus.Equals(2))
@@ -166,7 +174,7 @@ namespace KSI
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 hasKredits = true;
-                ACLevel = ScenarioUpgradeableFacilities.GetFacilityLevel(SpaceCenterFacility.AstronautComplex);
+                ACLevel = ScenarioUpgradeableFacilities.GetFacilityLevel(SpaceCenterFacility.AstronautComplex);                
             }
 
 
@@ -407,10 +415,8 @@ namespace KSI
                 Debug.Log("KSI :: Level set to 5 - Non-Career Mode default.");
             }
 
-            // newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available; // Already called earlier - keeping these lines as comments just in case.
-            // roster.GetNewKerbal(newKerb.type); // Again, appears to be redundant.
-            // KerbalRoster.SetExperienceTrait(newKerb); // appears to be redundant here.
-            GameEvents.onGUIAstronautComplexSpawn.Fire(); // Refreshes the AC so that new kerbal shows on the available roster - no other way I can find to do this.
+
+            GameEvents.onGUIAstronautComplexSpawn.Fire(); // Refreshes the AC so that new kerbal shows on the available roster.
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 Funding.Instance.AddFunds(-costMath(), TransactionReasons.CrewRecruited);
@@ -462,10 +468,10 @@ namespace KSI
     {
         private readonly Transform _applicantPanel;
 
-        public AstronautComplexApplicantPanel(Transform astronautComplex)
+        public AstronautComplexApplicantPanel(CMAstronautComplex astronautComplex)
         {
             if (astronautComplex == null) throw new ArgumentNullException("astronautComplex");
-            _applicantPanel = astronautComplex.Find("CrewPanels/panel_applicants");
+            _applicantPanel = astronautComplex.transform.Find("CrewPanels/panel_applicants");
 
             if (_applicantPanel == null)
                 throw new ArgumentException("No applicant panel found on " + astronautComplex.name);
@@ -495,7 +501,7 @@ namespace KSI
 
                 var screenPos = uiCam.camera.WorldToScreenPoint(_applicantPanel.position);
 
-                return new Rect(screenPos.x, Screen.height - screenPos.y, button.PixelSize.x, button.PixelSize.y);
+                return new Rect(screenPos.x, Screen.height - screenPos.y, button.width, button.height);
             }
         }
     }
