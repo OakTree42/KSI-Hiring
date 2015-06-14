@@ -313,7 +313,7 @@ namespace KSI
 				case 0: career = "Pilot"; break;
 				case 1: career = "Scientist"; break;
 				case 2: career = "Engineer"; break;
-				default: // throw an error?
+				default: break; // throw an error?
 			}
 
             while ((newKerb.experienceTrait.Title != career) || (newKerb.gender != gender))
