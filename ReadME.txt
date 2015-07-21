@@ -1,3 +1,6 @@
+Current Version is: 0.1.6.0
+Updated on: 7.20.2015
+
 This is provided as is.
 It is BETA at best.
 
@@ -19,9 +22,11 @@ I hope people find this mod useful.
 
 Things planned to be added:
 
-1. Different descriptors for kerbals so they look different.
-2. A hiring cost penalty based on the number of 'dead' kerbals you have in each profession.
-3. The ability to limit the level of hire based on avaliable kerbals in the KSC of that level minus 1 (Right now it is limited by the level of the complex only).
+1. Randomized Gender selector
+2. Cap on level based on current max level in complex
+3. Randomized smarts/fear stats at a discounted rate (More stock like)
+
+Note: I have had people ask for the ability to put the game in 'creative' mode to allow you to hire all the kerbals you want in stock career. I am looking into this. I have also had people ask me to make it so you could have level 1 or such in sandbox. This second one is NOT possible at the moment as any kerbal so created is 'pegged' to level 5 by the game at several points in processing by the stock sandbox mode and that means I would have to rebuild sandbox mode in effect, not something I hope to do soon.
 
 
 If you find a bug please let me know. 

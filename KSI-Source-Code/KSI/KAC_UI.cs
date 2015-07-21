@@ -306,60 +306,22 @@ namespace KSI
 
             ProtoCrewMember newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
             int loopcount = 0;
-            if ((KGender == 0) && (KCareer == 0))
+            ProtoCrewMember.Gender gender = (KGender==0)? ProtoCrewMember.Gender.Male : ProtoCrewMember.Gender.Female;
+            string career = "";
+			switch (KCareer)
+			{
+				case 0: career = "Pilot"; break;
+				case 1: career = "Scientist"; break;
+				case 2: career = "Engineer"; break;
+                default: break;// throw an error?
+			}
+            while ((newKerb.experienceTrait.Title != career) || (newKerb.gender != gender))
             {
-                while ((newKerb.experienceTrait.Title != "Pilot") || (newKerb.gender.ToString() != "Male"))
-                {
-                    HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
-                    newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
-                    loopcount++;
-                }
+                HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
+                newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
+                loopcount++;
             }
-            if ((KGender == 0) && (KCareer == 1))
-            {
-                while ((newKerb.experienceTrait.Title != "Scientist") || (newKerb.gender.ToString() != "Male"))
-                {
-                    HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
-                    newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
-                    loopcount++;
-                }
-            }
-            if ((KGender == 0) && (KCareer == 2))
-            {
-                while ((newKerb.experienceTrait.Title != "Engineer") || (newKerb.gender.ToString() != "Male"))
-                {
-                    HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
-                    newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
-                    loopcount++;
-                }
-            }
-            if ((KGender == 1) && (KCareer == 0))
-            {
-                while ((newKerb.experienceTrait.Title != "Pilot") || (newKerb.gender.ToString() != "Female"))
-                {
-                    HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
-                    newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
-                    loopcount++;
-                }
-            }
-            if ((KGender == 1) && (KCareer == 1))
-            {
-                while ((newKerb.experienceTrait.Title != "Scientist") || (newKerb.gender.ToString() != "Female"))
-                {
-                    HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
-                    newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
-                    loopcount++;
-                }
-            }
-            if ((KGender == 1) && (KCareer == 2))
-            {
-                while ((newKerb.experienceTrait.Title != "Engineer") || (newKerb.gender.ToString() != "Female"))
-                {
-                    HighLogic.CurrentGame.CrewRoster.Remove(newKerb);
-                    newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Crew);
-                    loopcount++;
-                }
-            }
+
             Debug.Log("KSI :: KIA MIA Stat is: " + KDead);
             Debug.Log("KSI :: " + newKerb.experienceTrait.TypeName + " " + newKerb.name + " has been created in: " + loopcount.ToString() + " loops.");
             newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
@@ -410,14 +372,18 @@ namespace KSI
                 Debug.Log("KSI :: Level set to 5 - Non-Career Mode default.");
             }
 
+            GameEvents.onGUIAstronautComplexSpawn.Fire();
+            // Refreshes the AC so that new kerbal shows on the available roster.
+            GameEvents.OnCrewmemberHired.Fire(newKerb, HighLogic.CurrentGame.CrewRoster.GetActiveCrewCount());
 
-            GameEvents.onGUIAstronautComplexSpawn.Fire(); // Refreshes the AC so that new kerbal shows on the available roster.
+
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 Funding.Instance.AddFunds(-costMath(), TransactionReasons.CrewRecruited);
                 Debug.Log("KSI :: Funds deducted.");
             }
             Debug.Log("KSI :: Hiring Function Completed.");
+
         }
 
 
