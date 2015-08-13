@@ -374,13 +374,18 @@ namespace KSI
 
             GameEvents.onGUIAstronautComplexSpawn.Fire();
             // Refreshes the AC so that new kerbal shows on the available roster.
-            GameEvents.OnCrewmemberHired.Fire(newKerb, HighLogic.CurrentGame.CrewRoster.GetActiveCrewCount());
+
+
+            // GameEvents.OnCrewmemberHired.Fire(newKerb, HighLogic.CurrentGame.CrewRoster.GetActiveCrewCount());
+            // The previous line was commented out because it was charging the cost determined by my mod plus the stock game cost in the previous event.
+            // This lead to even higher costs than if you weren't even using my mod... even if you could hire level 2 kerbals. \
 
 
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
+                double myFunds = Funding.Instance.Funds;
                 Funding.Instance.AddFunds(-costMath(), TransactionReasons.CrewRecruited);
-                Debug.Log("KSI :: Funds deducted.");
+                Debug.Log("KSI :: Total Funds removed " + costMath());
             }
             Debug.Log("KSI :: Hiring Function Completed.");
 
